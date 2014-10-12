@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LockScreenNotification</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_widget_name">Lock Screen Notification</string>
+
+    <string name="notification_access">Notification access</string>
+
+
+</resources>
