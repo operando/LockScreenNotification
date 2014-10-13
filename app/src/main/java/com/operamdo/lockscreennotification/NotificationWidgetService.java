@@ -29,7 +29,11 @@ public class NotificationWidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return StatusBarNotificationCache.getStatusBarNotification().length;
+            StatusBarNotification[] statusBarNotifications = StatusBarNotificationCache.getStatusBarNotification();
+            if (statusBarNotifications == null) {
+                return 0;
+            }
+            return statusBarNotifications.length;
         }
 
         @Override
