@@ -5,11 +5,17 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
+
+import com.operamdo.lockscreennotification.utils.IntentUtils;
+
+import java.lang.reflect.Field;
 
 
 public class MyActivity extends Activity {
@@ -47,10 +53,39 @@ public class MyActivity extends Activity {
 
         NotificationManager manager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
         manager.notify(0, bigTextStyle.build());
+
+        if (!enableNotificationAccess(NotificationService.class.getName())) {
+            IntentUtils.openSettingsNotificationAccess(this);
+        }
+    }
+
+    private boolean enableNotificationAccess(String componentName) {
+        Settings.Secure s = new Settings.Secure();
+        Class cls = s.getClass();
+        try {
+            Field nm = cls.getField("ENABLED_NOTIFICATION_LISTENERS");
+            final String flat = Settings.Secure.getString(getContentResolver(),
+                    (String) nm.get(s));
+            if (flat != null && !"".equals(flat)) {
+                final String[] names = flat.split(":");
+                for (int i = 0; i < names.length; i++) {
+                    final ComponentName cn = ComponentName.unflattenFromString(names[i]);
+                    if (cn != null) {
+                        if (cn.getClassName().equals(componentName)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void onNotificationAccess(View v) {
-        Intent i = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-        startActivity(i);
+        IntentUtils.openSettingsNotificationAccess(this);
     }
 }
