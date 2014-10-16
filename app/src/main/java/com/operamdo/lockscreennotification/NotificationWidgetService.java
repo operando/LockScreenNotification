@@ -1,6 +1,8 @@
 package com.operamdo.lockscreennotification;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.service.notification.StatusBarNotification;
 import android.text.format.DateUtils;
 import android.widget.RemoteViews;
@@ -44,6 +46,14 @@ public class NotificationWidgetService extends RemoteViewsService {
             rv.setTextViewText(R.id.notification_date, DateUtils.formatDateTime(getApplicationContext(), sn.getPostTime(),
                     DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE |
                             DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_YEAR));
+
+            try {
+                PackageManager pm = getApplication().getPackageManager();
+                rv.setImageViewBitmap(R.id.notification_app_icon,
+                        ((BitmapDrawable) pm.getApplicationIcon(sn.getPackageName())).getBitmap());
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
             return rv;
         }
 
