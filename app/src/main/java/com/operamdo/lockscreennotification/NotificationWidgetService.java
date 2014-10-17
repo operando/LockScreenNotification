@@ -1,5 +1,6 @@
 package com.operamdo.lockscreennotification;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
@@ -49,6 +50,9 @@ public class NotificationWidgetService extends RemoteViewsService {
 
             try {
                 PackageManager pm = getApplication().getPackageManager();
+                Context c = getApplicationContext().createPackageContext(sn.getPackageName(), Context.CONTEXT_RESTRICTED);
+                rv.setImageViewBitmap(R.id.notification_icon,
+                        ((BitmapDrawable) c.getResources().getDrawable(sn.getNotification().icon)).getBitmap());
                 rv.setImageViewBitmap(R.id.notification_app_icon,
                         ((BitmapDrawable) pm.getApplicationIcon(sn.getPackageName())).getBitmap());
             } catch (PackageManager.NameNotFoundException e) {

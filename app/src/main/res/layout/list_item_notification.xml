@@ -13,12 +13,13 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="8dp"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/notification_app_icon"
+            android:id="@+id/notification_icon"
             android:paddingRight="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -29,5 +30,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/notification_app_icon"
+        android:padding="4dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp" />
 
 </LinearLayout>
